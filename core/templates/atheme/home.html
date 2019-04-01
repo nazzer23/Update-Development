@@ -1,0 +1,71 @@
+<div class="row">
+    <div class="col-sm-3 d-none d-md-block"></div>
+    <div class="col">
+        <div class="my-3 p-3 bg-dark rounded box-shadow">
+            <form method="post">
+                <div class="form-row align-items-center">
+                    <div class="col my-1">
+                        <textarea class="form-control" name="updatePostText" id="exampleFormControlTextarea1" placeholder="It's Update Time!" rows="1"></textarea>
+                    </div>
+                    <div class="col-auto my-1">
+                        <button type="submit" class="btn btn-danger">Submit</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="my-3 p-3 bg-dark rounded box-shadow">
+            <div id="load_posts"></div>
+            <div id="load_posts_message"></div>
+        </div>
+    </div>
+    <div class="col-sm-3 d-none d-md-block"></div>
+</div>
+
+<script>
+    $(document).ready(function(){
+        var limit = 5;
+        var start = 0;
+        var action = 'inactive';
+        function load_posts_data_from_db(limit, start)
+        {
+            $.ajax({
+            url:"core/handlers/UserPostsHandler.php",
+            method:"POST",
+            data:{limit:limit, start:start},
+            cache:false,
+            success:function(data)
+            {
+                $('#load_posts').append(
+                    $(data)
+                );
+                if(data == '')
+                {
+                    $('#load_posts_message').html('<div class="my-3 p-3 bg-white rounded box-shadow"><center><h6>End of timeline</h6></center></div>');
+                    //$('#load_posts_message').html('<div class="my-3 p-3 bg-white rounded box-shadow"><center><h6>No more posts could be loaded</h6></center></div>');
+                    action = 'active';
+                }
+                else
+                {
+                    //$('#load_posts_message').html("");
+                    $('#load_posts_message').html('<div class="my-3 p-3 bg-white rounded box-shadow"><center><h6>Loading...</h6></center></div>');
+                    action = "inactive";
+                }
+            }
+            });
+        }
+        if(action == 'inactive') {
+            action = 'active';
+            load_posts_data_from_db(limit, start);
+        }
+        $(window).scroll(function(){
+            if($(window).scrollTop() + $(window).height() > $("#load_posts").height() && action == 'inactive')
+            {
+                action = 'active';
+                start = start + limit;
+                setTimeout(function(){
+                    load_posts_data_from_db(limit, start);
+                }, 1000);
+            }
+        });
+    });
+</script>

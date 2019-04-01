@@ -1,0 +1,106 @@
+<div class="row">
+    <div class="col-sm-3 d-none d-md-block"></div>
+    <div class="col">
+        <div class="row">
+        <div class="img-rounded" style="{coverData} background-size:cover; background-position:center; overflow:hidden; height:250px; min-width:100%; position:relative;">
+        <div class="img-responsive rounded-circle profilepiccontainer" style="background: url({profilePicture}); background-size: cover; background-position: center; overflow: hidden; width: 120px; height: 120px; margin:auto; margin-top:2%;"></div>
+        <div class="banner">
+            <center>
+                <a href=""><span>{postCount}</span><br>post(s)</a>
+                <a href=""><span>{friendCount}</span><br>friend(s)</a>
+                <a href=""><span>{photoCount}</span><br>photo(s)</a>
+            </center>
+        </div>
+        </div>
+        </div>
+        <div class="row">
+            <div class="profileinfo">
+                <div class="d-none d-md-block">
+                    <div class="col">
+                        {displayName}{friendStatusDesktop}
+                        <hr style="border-color:#A30000;">
+                    </div>
+                </div>
+
+                <div class="d-md-none">
+                    <li>{displayName}</li>
+                    {friendStatusMobile}
+                </div>
+                <div class="text-center">
+                    {profileBio}
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="postbox">
+                <form method="post">
+                    <div class="form-row align-items-center">
+                        <div class="col my-1">
+                            <textarea class="form-control" name="updatePostText" placeholder="It's Update Time!" id="exampleFormControlTextarea1" rows="1"></textarea>
+                        </div>
+                        <div class="col-auto my-1">
+                            <button type="submit" class="btn btn-danger">Submit</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="row">
+            <div class="p-3 bg-dark box-shadow col">
+                <div id="load_posts"></div>
+                <div id="load_posts_message"></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-3 d-none d-md-block"></div>
+</div>
+<script>
+    $(document).ready(function(){
+        var limit = 3;
+        var start = 0;
+        var profileID = {profileID};
+        var action = 'inactive';
+        function load_posts_data_from_db(limit, start, profileID)
+        {
+            $.ajax({
+            url:"core/handlers/UserPostsHandler.php",
+            method:"POST",
+            data:{limit:limit, start:start, profileID:profileID},
+            cache:false,
+            success:function(data)
+            {
+                $('#load_posts').append(
+                    $(data)
+                );
+                if(data == '')
+                {
+                    $('#load_posts_message').html('<div class="my-3 p-3 bg-white rounded box-shadow"><center><h6>End of timeline</h6></center></div>');
+                    //$('#load_posts_message').html('<div class="my-3 p-3 bg-white rounded box-shadow"><center><h6>No more posts could be loaded</h6></center></div>');
+                    action = 'active';
+                }
+                else
+                {
+                    //$('#load_posts_message').html("");
+                    $('#load_posts_message').html('<div class="my-3 p-3 bg-white rounded box-shadow"><center><h6>Loading...</h6></center></div>');
+                    action = "inactive";
+                }
+            }
+            });
+        }
+        if(action == 'inactive') {
+            action = 'active';
+            load_posts_data_from_db(limit, start, profileID);
+        }
+        $(window).scroll(function(){
+            if($(window).scrollTop() + $(window).height() > $("#load_posts").height() && action == 'inactive')
+            {
+                action = 'active';
+                start = start + limit;
+                setTimeout(function(){
+                    load_posts_data_from_db(limit, start, profileID);
+                }, 1000);
+            }
+        });
+    });
+</script>

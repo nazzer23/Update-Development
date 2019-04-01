@@ -1,0 +1,54 @@
+<div class="row">
+    <div class="col-sm"></div>
+    <div class="col">
+        <div class="my-3 p-3 bg-white rounded box-shadow">
+            <div id="messageBox"></div>
+            <form method="POST" action="register.php" novalidate="" onsubmit="">
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <input type="text" class="form-control" id="strFirstName" aria-describedby="firstnameHelp" placeholder="First Name" name="strFirstName" required>
+                        <small id="firstnameHelp" class="form-text text-muted">Required.</small>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <input type="text" class="form-control" id="strLastName" aria-describedby="lastnameHelp" placeholder="Last Name" name="strLastName" required>
+                        <small id="lastnameHelp" class="form-text text-muted">Required.</small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <input type="email" class="form-control" id="strEmail" aria-describedby="emailHelp" placeholder="Email" name="strEmail" required>
+                    <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <input type="password" class="form-control" id="strPassword" aria-describedby="passwordHelp" placeholder="Password" name="strPassword" required>
+                        <small id="passwordHelp" class="form-text text-muted">Required.</small>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <input type="password" class="form-control" id="strConfirmPassword" aria-describedby="confirmpasswordHelp" placeholder="Confirm Password" name="strConfirmPassword" required>
+                        <small id="confirmpasswordHelp" class="form-text text-muted">Required.</small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="DateOfBirth" class="col-form-label">Date of Birth</label>
+                    <input class="form-control" aria-describedby="dobHelp" type="date" id="dob" name="dob">
+                    <small id="dobHelp" class="form-text text-muted">Required.</small>
+                </div>
+                <div class="form-group">
+                    <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio" id="strGenderM" name="strGender" value="M" class="custom-control-input">
+                        <label class="custom-control-label" for="strGenderM">Male</label>
+                    </div>
+                    <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio" id="strGenderF" name="strGender" value="F" class="custom-control-input">
+                        <label class="custom-control-label" for="strGenderF">Female</label>
+                    </div>
+                </div>
+                <center>
+                    <button type="submit" id="registerBtn" class="btn btn-danger">Register</button>
+                    <a href="login.php" class="btn btn-danger">Back to Login</a>
+                </center>
+            </form>
+        </div>
+    </div>
+    <div class="col-sm"></div>
+</div>
